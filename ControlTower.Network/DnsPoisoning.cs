@@ -15,7 +15,7 @@ namespace ControlTower
 
         public void Poison(ref IPv4Packet packet)
         {
-            UdpPacket udp_packet = packet.Extract(typeof(UdpPacket)) as UdpPacket;
+            UdpPacket udp_packet = packet.Extract<UdpPacket>() as UdpPacket;
             
             if (udp_packet == null || udp_packet.SourcePort != 53)
                 return;

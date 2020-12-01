@@ -91,7 +91,7 @@ namespace ControlTower
             if (eth_packet == null)
                 return;
 
-            IPv4Packet ip_packet = packet.Extract(typeof(IPv4Packet)) as IPv4Packet;
+            IPv4Packet ip_packet = packet.Extract<IPv4Packet>() as IPv4Packet;
 
             if (ip_packet == null)
                 return;
@@ -102,9 +102,9 @@ namespace ControlTower
                 ReceivedPacked(ref ip_packet);
 
             if (!Route(ref ip_packet))
-                eth_packet.DestinationHwAddress = ResolveMacAdress(ip_packet.DestinationAddress);
+                eth_packet.DestinationHardwareAddress = ResolveMacAdress(ip_packet.DestinationAddress);
 
-            eth_packet.SourceHwAddress = device.MacAddress;
+            eth_packet.SourceHardwareAddress = device.MacAddress;
 
             // Calcul des checksums
             eth_packet.UpdateCalculatedValues();
@@ -120,14 +120,14 @@ namespace ControlTower
 
             foreach (Route route in Routes)
             {
-                if (eth_packet.SourceHwAddress.Equals(route.Source.MacAddress) &&
+                if (eth_packet.SourceHardwareAddress.Equals(route.Source.MacAddress) &&
                     (route.SourceIp == null || route.SourceIp.Equals(packet.SourceAddress)) &&
                     (route.DestIp == null || route.DestIp.Equals(packet.DestinationAddress)))
                 {
                     if (route.NewSourceIp != null)
                     {
                         packet.SourceAddress = route.NewSourceIp.IpAddress;
-                        eth_packet.SourceHwAddress = route.NewSourceIp.MacAddress;
+                        eth_packet.SourceHardwareAddress = route.NewSourceIp.MacAddress;
 
                         done = true;
                     }
@@ -135,7 +135,7 @@ namespace ControlTower
                     if (route.NewDestIp != null)
                     {
                         packet.DestinationAddress = route.NewDestIp.IpAddress;
-                        eth_packet.DestinationHwAddress = route.NewDestIp.MacAddress;
+                        eth_packet.DestinationHardwareAddress = route.NewDestIp.MacAddress;
 
                         done = true;
                     }

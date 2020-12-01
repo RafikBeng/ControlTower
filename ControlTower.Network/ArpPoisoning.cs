@@ -65,9 +65,9 @@ namespace ControlTower
         private Packet CreateArpPacket(IPAddress senderIpAddress, PhysicalAddress senderPhysicalAddress,
                                        IPAddress targetIpAddress, PhysicalAddress targetPhysicalAddress)
         {
-            var arpPacket = new ARPPacket(ARPOperation.Request, PhysicalAddress.Parse("000000000000"), targetIpAddress, senderPhysicalAddress, senderIpAddress);
+            var arpPacket = new ArpPacket(ArpOperation.Request, PhysicalAddress.Parse("000000000000"), targetIpAddress, senderPhysicalAddress, senderIpAddress);
 
-            return new EthernetPacket(_device.MacAddress, targetPhysicalAddress, EthernetPacketType.Arp) { PayloadPacket = arpPacket };
+            return new EthernetPacket(_device.MacAddress, targetPhysicalAddress, EthernetType.Arp) { PayloadPacket = arpPacket };
         }
 
         private ICaptureDevice _device;
